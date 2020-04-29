@@ -13,4 +13,6 @@ public interface TodoRepository extends CrudRepository<TodoEntity, Integer>{
     <S extends TodoEntity>TodoEntity save(TodoEntity todo);
     TodoEntity findById(int id);
     void deleteById(int id);
+
+    List<TodoEntity> findByCategory(String category);
 }

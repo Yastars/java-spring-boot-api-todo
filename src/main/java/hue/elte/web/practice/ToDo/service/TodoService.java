@@ -18,6 +18,12 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
+    public List<TodoEntity> getByCategory(String category){
+        if(category == null)
+            return todoRepository.findAll();
+        return todoRepository.findByCategory(category);
+    }
+
     public TodoEntity getById(int id){
         return todoRepository.findById(id);
     }

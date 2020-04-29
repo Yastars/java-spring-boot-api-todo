@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hue.elte.web.practice.ToDo.entity.TodoEntity;
@@ -22,9 +23,10 @@ public class TodoController {
     private TodoService todoService;
 
     @GetMapping("")
-    private List<TodoEntity> getAllTodos(){
-        return todoService.getAllTodos();
+    private List<TodoEntity> getTodos(@RequestParam(required = false) String category){
+        return todoService.getByCategory(category);
     }
+
 
     @GetMapping("/{id}")
     private TodoEntity getById(@PathVariable int id){

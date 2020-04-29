@@ -31,6 +31,8 @@ public class TodoEntity {
     public String name;
     public String content;
     public boolean isopen;
+
+    public String category;
     public Date creationDate;
 }
 
