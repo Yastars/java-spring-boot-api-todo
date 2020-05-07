@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import hue.elte.web.practice.ToDo.configuration.AuthenticatedUser;
 import hue.elte.web.practice.ToDo.entity.TodoEntity;
+import hue.elte.web.practice.ToDo.entity.TodoEntity.Status;
 import hue.elte.web.practice.ToDo.repository.TodoRepository;
 import hue.elte.web.practice.ToDo.service.TodoService;
 
@@ -94,6 +95,28 @@ public class TodoController {
         todoRepository.save(todo);
 
         return "redirect:/todos";
+    }
+
+    @Secured({ "ROLE_ADMIN" })
+    @PostMapping("/{id}/switchcheck")
+    public String switchcheck(@PathVariable Integer id, Model model) {
+        Optional<TodoEntity> dbTodo = todoRepository.findById(id);
+        TodoEntity todo = todoService.getById(id);
+
+        if (dbTodo.isEmpty()) {
+            return "redirect:/todos";
+        }
+
+        // model.addAttribute("todo", todoRepository.findById(id).get());
+
+        if (todo.getStatus() == Status.DONE)
+            todo.setStatus(Status.NEW);
+        else
+            todo.setStatus(Status.DONE);
+
+        todoRepository.save(todo);
+
+        return "todo-form";
     }
 
 }

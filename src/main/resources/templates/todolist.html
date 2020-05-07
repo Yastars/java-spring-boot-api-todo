@@ -1,33 +1,39 @@
 <!DOCTYPE HTML>
 <html layout:decorator="layouts/common">
-  <head>
-    <title>Content page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-  <body>
-    <div layout:fragment="content">
+
+<head>
+  <title>Content page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+  <div layout:fragment="content">
 
 
-      <h2 class="display-2 my-3" th:text="${title}">My todos</h2>
-      <p><a class="btn btn-primary" href="#" role="button" th:href="@{/todos/new}">New todo</a></p>
-      <div class="list-group">
-        <a th:each="todo : ${todos}"
-           href="#"
-           th:href="@{/todos/{id}(id=${todo.id})}"
-           class="list-group-item list-group-item-action"
-           th:classappend="${'list-group-item-' + (todo.status.name() == 'NEW' ? 'danger' : (todo.status.name() == 'DOING' ? 'warning' : 'success')) }">
-          <div class="d-flex w-100 justify-content-between align-items-center">
+    <h2 class="display-2 my-3" th:text="${title}">My todos</h2>
+    <p><a class="btn btn-primary" href="#" role="button" th:href="@{/todos/new}">New todo</a></p>
+    <div class="list-group">
+      <div th:each="todo : ${todos}" href="#" th:href="@{/todos/{id}(id=${todo.id})}"
+        class="list-group-item list-group-item-action"
+        th:classappend="${'list-group-item-' + (todo.status.name() == 'NEW' ? 'danger' : (todo.status.name() == 'DOING' ? 'warning' : 'success')) }">
+        <div class="d-flex w-100 justify-content-between align-items-center">
+          <a href="#" th:href="@{/todos/{id}(id=${todo.id})}">
             <h5 class="mb-1" th:text="${todo.title}">Bad machine</h5>
-            <span class="badge"
-                  th:text="${todo.status}"
-                  th:classappend="${'badge-' + (todo.status.name() == 'NEW' ? 'danger' : (todo.status.name() == 'DOING' ? 'warning' : 'success')) }">NEW
-            </span>
-          </div>
-          <p class="mb-1" th:text="${todo.description}">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-          <small>
-            <i class="fas fa-calendar-alt"></i><span th:text="${#temporals.format(todo.created_at, 'dd-MM-yyyy')}">2019.01.01.</span> 
+          </a>
+          <span class="badge" th:text="${todo.status}"
+            th:classappend="${'badge-' + (todo.status.name() == 'NEW' ? 'danger' : (todo.status.name() == 'DOING' ? 'warning' : 'success')) }">NEW
+          </span>
+
+          <input type="checkbox" th:value="${todo.status}" th:checked="${todo.status.name() == 'DONE'}" />
+
+        </div>
+        <p class="mb-1" th:text="${todo.description}">Donec id elit non mi porta gravida at eget metus. Maecenas sed
+          diam eget risus varius blandit.</p>
+        <small>
+          <i class="fas fa-calendar-alt"></i><span th:text="${#temporals.format(todo.created_at, 'dd-MM-yyyy')}">2019.01.01.</span> 
           </small>
-        </a>
+        </div>
       </div>            
 
     </div>
