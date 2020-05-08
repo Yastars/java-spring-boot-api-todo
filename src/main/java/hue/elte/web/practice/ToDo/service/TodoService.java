@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hue.elte.web.practice.ToDo.entity.TodoEntity;
+import hue.elte.web.practice.ToDo.entity.UserEntity;
+import hue.elte.web.practice.ToDo.entity.TodoEntity.Category;
 import hue.elte.web.practice.ToDo.repository.TodoRepository;
 
 @Service
@@ -22,6 +24,12 @@ public class TodoService {
         if(category == null)
             return todoRepository.findAll();
         return todoRepository.findByCategory(category);
+    }
+
+    public List<TodoEntity> getByUserAndCategory(UserEntity user, Category category){
+        if(category == null)
+            return todoRepository.findAll();
+        return todoRepository.findByUserAndCategory(user, category);
     }
 
     public TodoEntity getById(int id){

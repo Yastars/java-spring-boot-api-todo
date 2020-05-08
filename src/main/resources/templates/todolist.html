@@ -12,12 +12,24 @@
 
 
     <h2 class="display-2 my-3" th:text="${title}">My todos</h2>
+    <form action="" novalidate method="post"
+            th:action="@{/todos/filter}"
+            th:object="${filterOption}">
+    <select name="filterOption">
+      <option  th:each="category : ${T(hue.elte.web.practice.ToDo.entity.TodoEntity.Category).values()}"
+              th:value="${category}"
+              th:text="${category}">
+      </option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+    
     <p><a class="btn btn-primary" href="#" role="button" th:href="@{/todos/new}">New todo</a></p>
     <form action="" novalidate method="post"
             th:action="@{/todos/updatecheck}"
             th:object="${status}">
     <div class="list-group">
-      <div th:each="todo, stat : ${todosDTO.todos}" href="#" th:href="@{/todos/{id}(id=${todo.id})/edit}"
+      <div th:each="todo, stat : ${todosDTO.todos}" href="#" th:href="@{/todos/{id}(id=${todo.id})}"
         class="list-group-item list-group-item-action"
         th:classappend="${'list-group-item-' + (todo.status.name() == 'NEW' ? 'danger' : (todo.status.name() == 'DOING' ? 'warning' : 'success')) }">
         <div class="d-flex w-100 justify-content-between align-items-center">
@@ -33,12 +45,14 @@
         </div>
         <p class="mb-1" th:text="${todo.description}">Donec id elit non mi porta gravida at eget metus. Maecenas sed
           diam eget risus varius blandit.</p>
+          <b><p class="mb-1" th:text="'Category: ' + ${todo.category.name()}">Donec id elit non mi porta gravida at eget metus. Maecenas sed
+            diam eget risus varius blandit.</p></b>
         <small>
           <i class="fas fa-calendar-alt"></i><span th:text="${#temporals.format(todo.created_at, 'dd-MM-yyyy')}">2019.01.01.</span> 
           </small>
         </div>
       </div>      
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Update Check/Uncheck</button>
 
       </form>      
 

@@ -64,7 +64,13 @@ public class TodoEntity {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    public String category;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    public enum Category {
+        JAVA, WEB, ANGULAR
+    }
 
     @ManyToOne
     @JoinColumn

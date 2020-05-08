@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import hue.elte.web.practice.DTO.TodoStatusDTO;
 import hue.elte.web.practice.ToDo.configuration.AuthenticatedUser;
 import hue.elte.web.practice.ToDo.entity.TodoEntity;
+import hue.elte.web.practice.ToDo.entity.TodoEntity.Category;
 import hue.elte.web.practice.ToDo.entity.TodoEntity.Status;
 import hue.elte.web.practice.ToDo.repository.TodoRepository;
 import hue.elte.web.practice.ToDo.service.TodoService;
@@ -107,14 +107,6 @@ public class TodoController {
     public String updatecheck(@RequestParam(required = false) Integer[]  status, Model model ) {
 
         List<TodoEntity> userTodos = todoRepository.findByUser(authenticatedUser.getUser());
-
-        // if (bindingResult.hasErrors()) {
-        //     model.addAttribute("errors", bindingResult.getAllErrors());
-        //     return "todo-form";
-        // }
-
-
-        
         for (TodoEntity todo : userTodos) 
         { 
             todo.setStatus(Status.NEW);
@@ -127,6 +119,28 @@ public class TodoController {
         todosDTO.setTodos(todoRepository.findByUser(authenticatedUser.getUser()));
         model.addAttribute("todosDTO", todosDTO);
         return "redirect:/todos";
+    }
+
+    @PostMapping("/filter")
+    public String filter(@RequestParam("filterOption") String  filterOption, Model model ) {
+
+        Category category = Category.valueOf(filterOption);
+
+        List<TodoEntity> userTodos = todoRepository.findByUser(authenticatedUser.getUser());
+        List<TodoEntity> filteredTodos = new ArrayList<>();
+        
+        for (TodoEntity todo : userTodos) 
+            if(todo.getCategory().name() == category.name()) 
+                filteredTodos.add(todo);
+           
+            System.out.println(filteredTodos.size());
+                
+        
+        TodoStatusDTO todosDTO = new TodoStatusDTO();
+        todosDTO.setTodos(filteredTodos);
+        model.addAttribute("title", "Filtering : " + filterOption);
+        model.addAttribute("todosDTO", todosDTO);
+        return "todolist";
     }
 
 }
