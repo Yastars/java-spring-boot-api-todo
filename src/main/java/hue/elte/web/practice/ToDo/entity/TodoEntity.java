@@ -71,6 +71,12 @@ public class TodoEntity {
     @JsonIgnore
     private UserEntity user;
 
+    public boolean isDone(){
+        if(this.status == Status.DONE)
+            return true;
+        return false;
+    }
+
 }
 
 
