@@ -45,6 +45,20 @@
           </div>
         </div>
 
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select class="form-control" id="category" required
+                  th:field="*{category}">
+            <option value="WEB">Web</option>
+            <option value="ANGULAR">Angular</option>
+            <option value="JAVA">Java</option>
+          </select>
+          <div class="invalid-feedback">
+            Please provide a category!
+          </div>
+        </div>
+
         
 
         <button type="submit" class="btn btn-primary">Submit</button>

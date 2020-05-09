@@ -104,16 +104,23 @@ public class TodoController {
     }
 
     @PostMapping("/updatecheck")
-    public String updatecheck(@RequestParam(required = false) Integer[]  status, Model model ) {
+    public String updatecheck(@RequestParam(required = false) Integer[]  status, @RequestParam(required = false) Integer[] todosViewd,
+            Model model) {
 
         List<TodoEntity> userTodos = todoRepository.findByUser(authenticatedUser.getUser());
         for (TodoEntity todo : userTodos) 
         { 
-            todo.setStatus(Status.NEW);
-            if(Arrays.asList(status).contains((todo.getId()))){
-                todo.setStatus(Status.DONE);
-            }
-            todoRepository.save(todo);
+            if(Arrays.asList(todosViewd).contains((todo.getId())))
+                todo.setStatus(Status.NEW);
+                try {
+                    if(status.length >0 && Arrays.asList(status).contains((todo.getId()))){
+                        todo.setStatus(Status.DONE);
+                    }
+                    
+                } catch (Exception e) {
+                    //TODO: handle exception
+                }
+                todoRepository.save(todo);
         }
         TodoStatusDTO todosDTO = new TodoStatusDTO();
         todosDTO.setTodos(todoRepository.findByUser(authenticatedUser.getUser()));
